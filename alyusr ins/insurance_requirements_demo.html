@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>متطلبات إصدار التأمين - نظام اليسر</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/requirements-demo.css">
+</head>
+<body>
+  <div class="demo-strip">نسخة عرض تجريبية - البيانات المعروضة غير حقيقية</div>
+  <main class="requirements-page">
+    <header class="req-header">
+      <div class="container req-header-inner">
+        <a class="brand" href="/insurance-home/">
+          <span class="brand-mark">يس</span>
+          <span>نظام اليُسُر<small>Insurance Requirements Demo</small></span>
+        </a>
+        <div class="req-actions-top">
+          <a class="btn secondary small" href="/dashboard/admin/">لوحة الشركة</a>
+          <a class="btn secondary small" href="/insurance-home/">الرئيسية</a>
+        </div>
+      </div>
+    </header>
+
+    <section class="container req-hero">
+      <div>
+        <span class="notice">هذه نسخة تجريبية لعرض متطلبات التأمين المرتبطة بمعاملة التثمين.</span>
+        <h1>متطلبات إصدار التأمين</h1>
+        <p>نموذج Frontend تجريبي يوضح كيف تنتقل بيانات معاملة التثمين إلى شركة اليسر للتأمين ليتم مراجعتها وإرسالها إلى شركة التأمين.</p>
+      </div>
+      <div class="completion-card">
+        <span>نسبة اكتمال المتطلبات</span>
+        <strong id="completion-text">75%</strong>
+        <div class="progress" aria-label="نسبة اكتمال المتطلبات"><span id="completion-bar" style="width:75%"></span></div>
+        <small>يوجد حقول مميزة كبيانات مطلوبة قبل الإرسال النهائي.</small>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="card table-card summary-card">
+        <div class="summary-title">
+          <h2>ملخص الطلب</h2>
+          <span class="badge review" id="summary-status">قيد المراجعة</span>
+        </div>
+        <div class="table-scroll">
+          <table class="summary-table">
+            <thead>
+              <tr>
+                <th>رقم المعاملة</th>
+                <th>اسم العميل</th>
+                <th>نوع التأمين</th>
+                <th>قيمة الأصل</th>
+                <th>اسم البنك</th>
+                <th>حالة الطلب</th>
+                <th>نسبة الاكتمال</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>VAL-2026-0045</td>
+                <td>أحمد بن سعيد البلوشي</td>
+                <td id="summary-service">تأمين عقار</td>
+                <td id="summary-value">85,000 ر.ع</td>
+                <td>بنك مسقط</td>
+                <td id="summary-status-cell"><span class="badge review">قيد المراجعة</span></td>
+                <td id="summary-completion">75%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <form class="container req-form" id="insurance-requirements-form">
+      <section class="card req-section">
+        <div class="req-section-head">
+          <div class="icon">م</div>
+          <div>
+            <h2>بيانات المعاملة</h2>
+            <p>بيانات أساسية واردة من نظام التثمين بشكل تجريبي.</p>
+          </div>
+        </div>
+        <div class="req-grid">
+          <label>رقم معاملة التثمين<input value="VAL-2026-0045"></label>
+          <label>تاريخ الطلب<input type="date" value="2026-05-12"></label>
+          <label>نوع الخدمة
+            <select id="service-type">
+              <option value="vehicle">تأمين مركبة</option>
+              <option value="property" selected>تأمين عقار</option>
+              <option value="assets">تأمين ممتلكات</option>
+              <option value="finance">تأمين تمويل</option>
+            </select>
+          </label>
+          <label>حالة الطلب
+            <select id="request-status">
+              <option>جديد</option>
+              <option selected>قيد المراجعة</option>
+              <option>مكتمل</option>
+              <option>ناقص بيانات</option>
+            </select>
+          </label>
+          <label>اسم موظف التثمين<input value="سالم الرواحي"></label>
+          <label>فرع شركة التثمين<input value="فرع مسقط"></label>
+          <label>اسم شركة التثمين<input value="شركة اليسر للتثمين"></label>
+        </div>
+      </section>
+
+      <section class="card req-section">
+        <div class="req-section-head">
+          <div class="icon">ع</div>
+          <div>
+            <h2>بيانات العميل</h2>
+            <p>حقول العميل والتمويل اللازمة لشركة التأمين.</p>
+          </div>
+        </div>
+        <div class="req-grid">
+          <label>اسم العميل<input value="أحمد بن سعيد البلوشي"></label>
+          <label>رقم الهاتف<input value="9XXXXXXX"></label>
+          <label>الرقم المدني / البطاقة الشخصية<input value="12345678"></label>
+          <label class="missing">البريد الإلكتروني<span class="required-tag">مطلوب</span><input value="" placeholder="customer@example.com"></label>
+          <label>العنوان<input value="مسقط - المعبيلة"></label>
+          <label>جهة العمل<input value="شركة خاصة"></label>
+          <label>المسمى الوظيفي<input value="مدير عمليات"></label>
+          <label>الراتب أو الدخل الشهري<input value="1,250 ر.ع"></label>
+          <label>اسم البنك<input value="بنك مسقط"></label>
+          <label>نوع التمويل أو القرض<input value="تمويل عقاري"></label>
+          <label>مبلغ التمويل<input value="62,000 ر.ع"></label>
+          <label>مدة التمويل<input value="15 سنة"></label>
+          <label class="wide">الغرض من التأمين<textarea rows="3">إصدار تأمين مرتبط بتمويل عقاري بناءً على تقرير التثمين.</textarea></label>
+        </div>
+      </section>
+
+      <section class="card req-section service-section" data-service-section="vehicle">
+        <div class="req-section-head">
+          <div class="icon">س</div>
+          <div>
+            <h2>تأمين المركبات</h2>
+            <p>يظهر هذا القسم عند اختيار نوع الخدمة: تأمين مركبة.</p>
+          </div>
+        </div>
+        <div class="req-grid">
+          <label>نوع المركبة<input value="سيارة دفع رباعي"></label>
+          <label>الماركة<input value="Toyota"></label>
+          <label>الموديل<input value="Land Cruiser"></label>
+          <label>سنة الصنع<input value="2022"></label>
+          <label>رقم اللوحة<input value="M 45621"></label>
+          <label>رقم الشاصي<input value="JTEXAMPLE2026"></label>
+          <label>لون المركبة<input value="أبيض"></label>
+          <label>قيمة المركبة حسب تقرير التثمين<input value="22,500 ر.ع"></label>
+          <label>حالة المركبة<select><option>جديدة</option><option selected>مستعملة</option></select></label>
+          <label>نوع التأمين المطلوب<select><option selected>شامل</option><option>طرف ثالث</option><option>مرتبط بتمويل</option></select></label>
+          <label>اسم البنك الممول إن وجد<input value="بنك مسقط"></label>
+          <label class="wide">ملاحظات موظف التثمين<textarea rows="3">تمت معاينة المركبة وإرفاق صور خارجية وداخلية.</textarea></label>
+        </div>
+        <div class="attachments">
+          <h3>المرفقات المطلوبة</h3>
+          <div class="upload-grid">
+            <div class="upload ok">صورة ملكية المركبة</div>
+            <div class="upload ok">صورة البطاقة الشخصية للعميل</div>
+            <div class="upload missing-upload">صورة رخصة القيادة <span>مطلوب</span></div>
+            <div class="upload ok">عرض سعر أو فاتورة شراء المركبة</div>
+            <div class="upload ok">تقرير التثمين</div>
+            <div class="upload ok">صور المركبة من الخارج</div>
+            <div class="upload missing-upload">صور المركبة من الداخل <span>مطلوب</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card req-section service-section" data-service-section="property">
+        <div class="req-section-head">
+          <div class="icon">ر</div>
+          <div>
+            <h2>تأمين العقارات</h2>
+            <p>يظهر هذا القسم عند اختيار نوع الخدمة: تأمين عقار.</p>
+          </div>
+        </div>
+        <div class="req-grid">
+          <label>نوع العقار<select><option>أرض</option><option selected>فيلا</option><option>شقة</option><option>مبنى</option><option>عقار تجاري</option></select></label>
+          <label>موقع العقار<input value="مسقط - المعبيلة"></label>
+          <label>المحافظة<input value="مسقط"></label>
+          <label>الولاية<input value="السيب"></label>
+          <label>رقم القطعة<input value="245"></label>
+          <label>رقم المربع<input value="MAB-12"></label>
+          <label class="missing">رقم الكروكي<span class="required-tag">مطلوب</span><input value=""></label>
+          <label>مساحة الأرض<input value="600 م²"></label>
+          <label>مساحة البناء<input value="340 م²"></label>
+          <label>قيمة العقار حسب تقرير التثمين<input value="85,000 ر.ع"></label>
+          <label>اسم البنك الممول إن وجد<input value="بنك مسقط"></label>
+          <label>الغرض من التأمين<select><option selected>تمويل</option><option>بيع</option><option>ضمان</option><option>حماية ممتلكات</option></select></label>
+          <label class="wide">ملاحظات موظف التثمين<textarea rows="3">العقار في حالة جيدة، مع حاجة لاستكمال رقم الكروكي قبل إصدار الوثيقة.</textarea></label>
+        </div>
+        <div class="attachments">
+          <h3>المرفقات المطلوبة</h3>
+          <div class="upload-grid">
+            <div class="upload ok">صورة الملكية</div>
+            <div class="upload missing-upload">صورة الكروكي <span>مطلوب</span></div>
+            <div class="upload ok">تقرير التثمين</div>
+            <div class="upload ok">صور العقار</div>
+            <div class="upload ok">صورة البطاقة الشخصية للمالك</div>
+            <div class="upload ok">خطاب البنك أو مستند التمويل إن وجد</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card req-section service-section" data-service-section="assets">
+        <div class="req-section-head">
+          <div class="icon">م</div>
+          <div>
+            <h2>تأمين الممتلكات</h2>
+            <p>يظهر هذا القسم عند اختيار نوع الخدمة: تأمين ممتلكات.</p>
+          </div>
+        </div>
+        <div class="req-grid">
+          <label>نوع الممتلكات<input value="معدات مكتبية"></label>
+          <label>وصف الممتلكات<input value="أجهزة ومعدات تشغيل"></label>
+          <label>موقع الممتلكات<input value="مسقط - الخوير"></label>
+          <label>قيمة الممتلكات<input value="18,000 ر.ع"></label>
+          <label>مدة التأمين المطلوبة<input value="12 شهر"></label>
+          <label>تاريخ بداية التأمين<input type="date" value="2026-06-01"></label>
+          <label>هل توجد فواتير شراء؟<select><option selected>نعم</option><option>لا</option></select></label>
+          <label>هل يوجد تقرير تقييم أو تثمين؟<select><option selected>نعم</option><option>لا</option></select></label>
+          <label class="wide missing">ملاحظات إضافية<span class="required-tag">مطلوب</span><textarea rows="3"></textarea></label>
+        </div>
+        <div class="attachments">
+          <h3>المرفقات المطلوبة</h3>
+          <div class="upload-grid">
+            <div class="upload ok">صور الممتلكات</div>
+            <div class="upload ok">فواتير الشراء إن وجدت</div>
+            <div class="upload ok">تقرير التقييم أو التثمين إن وجد</div>
+            <div class="upload missing-upload">بيانات المالك <span>مطلوب</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card req-section service-section" data-service-section="finance">
+        <div class="req-section-head">
+          <div class="icon">ت</div>
+          <div>
+            <h2>تأمين التمويل</h2>
+            <p>قسم تجريبي مختصر للطلبات المرتبطة بتمويل أو قرض بناءً على بيانات العميل والمعاملة.</p>
+          </div>
+        </div>
+        <div class="req-grid">
+          <label>نوع التمويل<input value="تمويل عقاري"></label>
+          <label>الجهة الممولة<input value="بنك مسقط"></label>
+          <label>مبلغ التمويل<input value="62,000 ر.ع"></label>
+          <label>مدة التمويل<input value="15 سنة"></label>
+          <label>الأصل المرتبط بالتمويل<input value="فيلا سكنية"></label>
+          <label class="missing">خطاب موافقة التمويل<span class="required-tag">مطلوب</span><input value=""></label>
+        </div>
+      </section>
+
+      <section class="card req-section">
+        <div class="req-section-head">
+          <div class="icon">ت</div>
+          <div>
+            <h2>بيانات التأمين العامة</h2>
+            <p>بيانات مشتركة مطلوبة قبل إرسال الطلب إلى شركة التأمين.</p>
+          </div>
+        </div>
+        <div class="req-grid">
+          <label>شركة التأمين المقترحة<input value="شركة اليسر للتأمين"></label>
+          <label>نوع وثيقة التأمين<input value="وثيقة تأمين مرتبطة بالتثمين"></label>
+          <label>مدة التأمين<input value="12 شهر"></label>
+          <label>تاريخ بداية التأمين<input type="date" value="2026-06-01"></label>
+          <label>تاريخ انتهاء التأمين<input type="date" value="2027-05-31"></label>
+          <label>هل يوجد تأمين سابق؟<select><option>نعم</option><option selected>لا</option></select></label>
+          <label>هل توجد مطالبات سابقة؟<select><option>نعم</option><option selected>لا</option></select></label>
+          <label>طريقة الدفع<select><option selected>عن طريق البنك</option><option>دفع مباشر</option><option>أقساط</option></select></label>
+          <label>حالة اكتمال المتطلبات<select><option>مكتملة</option><option selected>ناقصة جزئيًا</option><option>ناقصة بيانات</option></select></label>
+          <label class="wide">ملاحظات شركة التأمين<textarea rows="3">بانتظار استكمال الحقول المطلوبة قبل الإصدار.</textarea></label>
+          <label class="wide">ملاحظات شركة اليسر للتأمين<textarea rows="3">هذه البيانات تجريبية، وسيتم ربطها لاحقًا مع نظام التثمين عبر API.</textarea></label>
+        </div>
+      </section>
+
+      <section class="req-bottom-actions">
+        <button type="button" class="btn" data-demo-action>حفظ كمسودة</button>
+        <button type="button" class="btn success" data-demo-action>إرسال إلى شركة التأمين</button>
+        <button type="button" class="btn warning" data-demo-action>طلب استكمال البيانات</button>
+        <button type="button" class="btn secondary" data-demo-action>تصدير PDF تجريبي</button>
+        <button type="button" class="btn ghost" data-demo-action>رجوع إلى معاملة التثمين</button>
+      </section>
+    </form>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/assets/requirements-demo.js"></script>
+</body>
+</html>

@@ -1,0 +1,1384 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>عروض أسعار التأمين - شركة يُسُر للوساطة التأمينية</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <style>
+    /* ═══════════════════════════════════════════
+       متغيرات وإعادة تعريف خاصة بالصفحة
+    ═══════════════════════════════════════════ */
+    :root {
+      --best-price: #065f46;
+      --best-price-bg: #d1fae5;
+      --best-cover: #1e40af;
+      --best-cover-bg: #dbeafe;
+      --expiring: #92400e;
+      --expiring-bg: #fef3c7;
+      --available: #374151;
+      --available-bg: #f3f4f6;
+      --selected-bg: #ecfdf5;
+      --selected-border: #059669;
+    }
+
+    /* ═══════════════════════════════════════════
+       شريط ديمو
+    ═══════════════════════════════════════════ */
+    .demo-strip {
+      background: #102033;
+      color: #fff;
+      font-size: 13px;
+      text-align: center;
+      padding: 7px 14px;
+    }
+
+    /* ═══════════════════════════════════════════
+       الهيدر
+    ═══════════════════════════════════════════ */
+    .site-header {
+      background: rgba(255,255,255,0.96);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(6px);
+    }
+    .header-inner {
+      min-height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 800; }
+    .brand-mark {
+      width: 40px; height: 40px;
+      display: grid; place-items: center;
+      border-radius: 8px;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 900;
+      font-size: 18px;
+    }
+    .brand small { display: block; color: var(--muted); font-size: 12px; font-weight: 600; }
+    .header-actions { display: flex; align-items: center; gap: 10px; }
+
+    /* ═══════════════════════════════════════════
+       الصفحة الرئيسية
+    ═══════════════════════════════════════════ */
+    .page-hero {
+      background: linear-gradient(135deg, #eef6fb 0%, #f0fdf9 100%);
+      border-bottom: 1px solid var(--line);
+      padding: 32px 0 28px;
+    }
+    .page-hero-inner {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .page-hero h1 { margin: 0 0 6px; font-size: 26px; }
+    .page-hero p { margin: 0; color: #445566; font-size: 15px; }
+    .page-hero-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+
+    /* ═══════════════════════════════════════════
+       Stepper
+    ═══════════════════════════════════════════ */
+    .stepper-wrap {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin: 24px 0;
+      overflow-x: auto;
+    }
+    .stepper {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      min-width: 600px;
+    }
+    .stepper-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      text-align: center;
+    }
+    .stepper-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 17px;
+      left: -50%;
+      width: 100%;
+      height: 2px;
+      background: var(--line);
+      z-index: 0;
+    }
+    .stepper-item.done:not(:last-child)::after,
+    .stepper-item.active:not(:last-child)::after {
+      background: var(--brand-2);
+    }
+    .step-dot {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      font-size: 13px; font-weight: 800;
+      z-index: 1;
+      position: relative;
+      background: var(--line);
+      color: var(--muted);
+      border: 2px solid var(--line);
+    }
+    .stepper-item.done .step-dot {
+      background: var(--brand-2);
+      border-color: var(--brand-2);
+      color: #fff;
+    }
+    .stepper-item.active .step-dot {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+      box-shadow: 0 0 0 4px rgba(11,95,138,0.15);
+    }
+    .step-label {
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      max-width: 90px;
+    }
+    .stepper-item.done .step-label { color: var(--brand-2); }
+    .stepper-item.active .step-label { color: var(--brand); }
+
+    /* ═══════════════════════════════════════════
+       بطاقة ملخص الطلب
+    ═══════════════════════════════════════════ */
+    .request-summary {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .request-summary-header {
+      background: linear-gradient(90deg, #0b5f8a, #0d7a6b);
+      color: #fff;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .request-summary-header h3 { margin: 0; font-size: 16px; }
+    .request-summary-body {
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .summary-field label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 3px;
+    }
+    .summary-field span {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .summary-field span.amount {
+      font-size: 16px;
+      color: var(--brand);
+    }
+
+    /* ═══════════════════════════════════════════
+       شريط العرض المختار
+    ═══════════════════════════════════════════ */
+    .selected-banner {
+      display: none;
+      background: #d1fae5;
+      border: 1px solid #059669;
+      border-radius: 10px;
+      padding: 14px 20px;
+      margin-bottom: 20px;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .selected-banner.visible { display: flex; }
+    .selected-banner-icon {
+      width: 38px; height: 38px;
+      background: #059669;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      color: #fff;
+      font-size: 20px;
+      flex: 0 0 auto;
+    }
+    .selected-banner-text strong { display: block; font-size: 15px; color: #065f46; }
+    .selected-banner-text span { font-size: 13px; color: #047857; }
+
+    /* ═══════════════════════════════════════════
+       تنبيه مهم
+    ═══════════════════════════════════════════ */
+    .important-alert {
+      background: #fef9ed;
+      border: 1px solid #f6c84b;
+      border-radius: 8px;
+      padding: 12px 16px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #713f12;
+    }
+    .important-alert-icon { font-size: 18px; flex: 0 0 auto; margin-top: 1px; }
+
+    /* ═══════════════════════════════════════════
+       فلاتر وفرز
+    ═══════════════════════════════════════════ */
+    .filters-bar {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .filters-bar label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .filters-bar select {
+      border: 1px solid #cdd7e1;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 13px;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+    }
+    .filter-check {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    .filter-check input { width: 16px; height: 16px; accent-color: var(--brand); cursor: pointer; }
+    .filters-bar .sep { width: 1px; height: 28px; background: var(--line); }
+
+    /* ═══════════════════════════════════════════
+       شبكة العروض
+    ═══════════════════════════════════════════ */
+    .quotes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+
+    /* ═══════════════════════════════════════════
+       بطاقة العرض
+    ═══════════════════════════════════════════ */
+    .quote-card {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(16,32,51,0.05);
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+      display: flex;
+      flex-direction: column;
+    }
+    .quote-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(16,32,51,0.1);
+    }
+    .quote-card.selected {
+      border-color: var(--selected-border);
+      background: var(--selected-bg);
+    }
+    .quote-card.hidden { display: none; }
+
+    .quote-card-top {
+      padding: 16px 18px 12px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .company-logo {
+      width: 48px; height: 48px;
+      border-radius: 8px;
+      display: grid; place-items: center;
+      font-weight: 900;
+      font-size: 17px;
+      color: #fff;
+      flex: 0 0 auto;
+    }
+    .company-info { flex: 1; min-width: 0; }
+    .company-name { font-size: 14px; font-weight: 800; margin: 0 0 2px; line-height: 1.3; }
+    .quote-number { font-size: 12px; color: var(--muted); font-weight: 600; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .badge.best-price { background: var(--best-price-bg); color: var(--best-price); }
+    .badge.best-cover { background: var(--best-cover-bg); color: var(--best-cover); }
+    .badge.expiring { background: var(--expiring-bg); color: var(--expiring); }
+    .badge.available { background: var(--available-bg); color: var(--available); }
+    .badge.selected-badge { background: #d1fae5; color: #065f46; }
+    .badge.monthly { background: #ede9fe; color: #5b21b6; }
+
+    .quote-card-price {
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: #f9fafb;
+      border-bottom: 1px solid var(--line);
+    }
+    .price-block {}
+    .price-label { font-size: 11px; color: var(--muted); font-weight: 600; }
+    .price-amount { font-size: 26px; font-weight: 900; color: var(--brand); line-height: 1.2; }
+    .price-sub { font-size: 12px; color: var(--muted); }
+    .price-monthly {}
+    .price-monthly .price-amount { font-size: 16px; color: var(--brand-2); }
+
+    .quote-card-body {
+      padding: 14px 18px;
+      flex: 1;
+    }
+    .cover-label { font-size: 12px; font-weight: 800; color: var(--muted); margin: 0 0 8px; }
+    .cover-list { list-style: none; padding: 0; margin: 0 0 10px; display: grid; gap: 5px; }
+    .cover-list li { font-size: 13px; display: flex; align-items: center; gap: 6px; }
+    .cover-list li::before {
+      content: '✓';
+      color: var(--brand-2);
+      font-weight: 900;
+      font-size: 13px;
+      flex: 0 0 auto;
+    }
+    .cover-list.excluded li::before {
+      content: '✕';
+      color: var(--danger);
+    }
+    .deductible-row {
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .deductible-row strong { color: var(--ink); }
+    .policy-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .meta-chip {
+      font-size: 11px;
+      background: #f1f5f9;
+      color: #475569;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+
+    .quote-card-footer {
+      padding: 12px 18px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .quote-card-footer .btn { flex: 1; min-width: 120px; font-size: 13px; }
+
+    /* ═══════════════════════════════════════════
+       جدول المقارنة
+    ═══════════════════════════════════════════ */
+    .compare-section {
+      margin-bottom: 32px;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title span {
+      width: 4px; height: 22px;
+      background: var(--brand);
+      border-radius: 2px;
+      display: inline-block;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    thead th {
+      background: #f1f5f9;
+      padding: 11px 14px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #4b5563;
+      text-align: right;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--line);
+    }
+    tbody td {
+      padding: 11px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: #fafbfc; }
+    tbody tr.selected-row td { background: #ecfdf5; }
+    .compare-price { font-weight: 900; color: var(--brand); font-size: 15px; }
+
+    /* ═══════════════════════════════════════════
+       ملاحظات العميل
+    ═══════════════════════════════════════════ */
+    .notes-section {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 32px;
+    }
+    .notes-section h3 { margin: 0 0 12px; font-size: 17px; }
+    .notes-section textarea {
+      width: 100%;
+      border: 1px solid #cdd7e1;
+      border-radius: 8px;
+      padding: 11px 12px;
+      font-family: inherit;
+      font-size: 14px;
+      resize: vertical;
+      min-height: 90px;
+      outline: none;
+      color: var(--ink);
+      background: #fff;
+    }
+    .notes-section textarea:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(11,95,138,0.12);
+    }
+
+    /* ═══════════════════════════════════════════
+       أزرار الإجراءات السفلية
+    ═══════════════════════════════════════════ */
+    .actions-bar {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .actions-bar-group { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    /* ═══════════════════════════════════════════
+       حالة عدم وجود عروض
+    ═══════════════════════════════════════════ */
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: 52px 20px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      margin-bottom: 24px;
+    }
+    .empty-state.visible { display: block; }
+    .empty-state-icon { font-size: 48px; margin-bottom: 14px; }
+    .empty-state h3 { margin: 0 0 8px; font-size: 18px; }
+    .empty-state p { margin: 0; color: var(--muted); }
+
+    /* ═══════════════════════════════════════════
+       Modal
+    ═══════════════════════════════════════════ */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(16,32,51,0.45);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 12px;
+      max-width: 580px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 24px 60px rgba(16,32,51,0.2);
+    }
+    .modal-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 1;
+    }
+    .modal-header h3 { margin: 0; font-size: 18px; }
+    .modal-close {
+      width: 32px; height: 32px;
+      border: none;
+      background: #f1f5f9;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 18px;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+    }
+    .modal-close:hover { background: #e2e8f0; }
+    .modal-body { padding: 20px; }
+    .modal-section { margin-bottom: 18px; }
+    .modal-section h4 {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--muted);
+      margin: 0 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .modal-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 6px;
+    }
+    .modal-section ul li {
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 10px;
+      border-radius: 6px;
+      background: #f8fafc;
+    }
+    .modal-section ul li.inc { color: #065f46; }
+    .modal-section ul li.inc::before { content: '✓'; color: var(--brand-2); font-weight: 900; }
+    .modal-section ul li.exc { color: #9f1239; }
+    .modal-section ul li.exc::before { content: '✕'; color: var(--danger); font-weight: 900; }
+    .modal-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .modal-info-item label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted);
+      margin-bottom: 2px;
+      text-transform: uppercase;
+    }
+    .modal-info-item span { font-size: 14px; font-weight: 700; }
+    .modal-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    /* ═══════════════════════════════════════════
+       Confirm Modal
+    ═══════════════════════════════════════════ */
+    .confirm-modal .modal { max-width: 420px; }
+    .confirm-body { padding: 24px 20px; text-align: center; }
+    .confirm-icon { font-size: 44px; margin-bottom: 12px; }
+    .confirm-body h3 { margin: 0 0 8px; font-size: 18px; }
+    .confirm-body p { margin: 0 0 6px; color: var(--muted); font-size: 14px; }
+    .confirm-price { font-size: 22px; font-weight: 900; color: var(--brand); margin: 4px 0 0; }
+
+    /* ═══════════════════════════════════════════
+       Toast
+    ═══════════════════════════════════════════ */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #102033;
+      color: #fff;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s;
+      z-index: 200;
+      white-space: nowrap;
+      max-width: calc(100vw - 40px);
+      text-align: center;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .toast.success { background: #065f46; }
+    .toast.info { background: var(--brand); }
+    .toast.warn { background: var(--warning); }
+
+    /* ═══════════════════════════════════════════
+       فوتر
+    ═══════════════════════════════════════════ */
+    .page-footer {
+      background: #102033;
+      color: #9cb3c5;
+      text-align: center;
+      padding: 18px;
+      font-size: 13px;
+    }
+
+    /* ═══════════════════════════════════════════
+       Responsive
+    ═══════════════════════════════════════════ */
+    @media (max-width: 640px) {
+      .page-hero h1 { font-size: 20px; }
+      .quotes-grid { grid-template-columns: 1fr; }
+      .header-actions .btn { display: none; }
+      .request-summary-body { grid-template-columns: repeat(2, 1fr); }
+      .stepper { min-width: 500px; }
+      .step-label { font-size: 10px; max-width: 72px; }
+      .actions-bar { flex-direction: column; }
+    }
+
+    /* ═══════════════════════════════════════════
+       مؤشر أفضل عرض
+    ═══════════════════════════════════════════ */
+    .quote-card.best-price-card {
+      border-color: #059669;
+      box-shadow: 0 4px 16px rgba(5,150,105,0.12);
+    }
+    .quote-card.best-cover-card {
+      border-color: #2563eb;
+      box-shadow: 0 4px 16px rgba(37,99,235,0.1);
+    }
+  </style>
+</head>
+<body>
+
+<!-- شريط ديمو -->
+<div class="demo-strip">🔬 صفحة تجريبية — البيانات المعروضة غير حقيقية وللعرض فقط</div>
+
+<!-- الهيدر -->
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a class="brand" href="/index.html">
+        <div class="brand-mark">ي</div>
+        <div>
+          شركة يُسُر للوساطة التأمينية
+          <small>للتأمين والتثمين</small>
+        </div>
+      </a>
+      <div class="header-actions">
+        <a href="/customer/portal/index.html" class="btn secondary small">← بوابة العميل</a>
+        <button class="btn secondary small" onclick="handleContact()">تواصل مع الدعم</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- صفحة بطل -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-inner">
+      <div>
+        <h1>عروض أسعار التأمين</h1>
+        <p>يمكنك مقارنة عروض التأمين المتاحة واختيار العرض الأنسب لك.</p>
+        <div class="page-hero-badges">
+          <span class="badge available">📋 رقم الطلب: <strong id="req-id-badge">INS-2026-0007</strong></span>
+        </div>
+      </div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:flex-start;">
+        <button class="btn secondary small" onclick="handleDownloadPDF()">⬇ تحميل PDF</button>
+        <button class="btn secondary small" onclick="handleShare()">🔗 مشاركة الرابط</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- المحتوى الرئيسي -->
+<main style="padding: 24px 0 40px;">
+  <div class="container">
+
+    <!-- Stepper -->
+    <div class="stepper-wrap">
+      <div class="stepper" id="stepper">
+        <div class="stepper-item done">
+          <div class="step-dot">✓</div>
+          <div class="step-label">تم استلام الطلب</div>
+        </div>
+        <div class="stepper-item done">
+          <div class="step-dot">✓</div>
+          <div class="step-label">طلب عروض من مصادر التأمين</div>
+        </div>
+        <div class="stepper-item done">
+          <div class="step-dot">✓</div>
+          <div class="step-label">وصلت العروض</div>
+        </div>
+        <div class="stepper-item active">
+          <div class="step-dot">4</div>
+          <div class="step-label">بانتظار اختيار العميل</div>
+        </div>
+        <div class="stepper-item">
+          <div class="step-dot">5</div>
+          <div class="step-label">إصدار الوثيقة</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ملخص الطلب -->
+    <div class="request-summary">
+      <div class="request-summary-header">
+        <h3>📄 ملخص طلب التأمين</h3>
+        <span class="badge" style="background:rgba(255,255,255,0.2);color:#fff;font-size:12px;">⏳ بانتظار اختيار العميل</span>
+      </div>
+      <div class="request-summary-body">
+        <div class="summary-field">
+          <label>رقم طلب التأمين</label>
+          <span id="req-id">INS-2026-0007</span>
+        </div>
+        <div class="summary-field">
+          <label>رقم معاملة التثمين</label>
+          <span>VAL-2026-0045</span>
+        </div>
+        <div class="summary-field">
+          <label>اسم العميل</label>
+          <span>أحمد بن سعيد البلوشي</span>
+        </div>
+        <div class="summary-field">
+          <label>نوع التأمين</label>
+          <span>تأمين عقار</span>
+        </div>
+        <div class="summary-field">
+          <label>قيمة الأصل المؤمن عليه</label>
+          <span class="amount">85,000 ر.ع</span>
+        </div>
+        <div class="summary-field">
+          <label>البنك الممول</label>
+          <span>بنك مسقط</span>
+        </div>
+        <div class="summary-field">
+          <label>الحالة</label>
+          <span>⏳ بانتظار اختيار العميل</span>
+        </div>
+        <div class="summary-field">
+          <label>تاريخ إرسال العروض</label>
+          <span>12/05/2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- شريط العرض المختار -->
+    <div class="selected-banner" id="selected-banner">
+      <div class="selected-banner-icon">✓</div>
+      <div class="selected-banner-text">
+        <strong id="selected-banner-title">العرض المختار: —</strong>
+        <span id="selected-banner-sub">—</span>
+      </div>
+    </div>
+
+    <!-- تنبيه مهم -->
+    <div class="important-alert">
+      <div class="important-alert-icon">⚠</div>
+      <div>
+        <strong>تنبيه مهم:</strong> اختيار العرض لا يعني إصدار الوثيقة مباشرة. سيتم مراجعة الطلب وإكمال إجراءات الدفع والموافقة النهائية من شركة التأمين.
+      </div>
+    </div>
+
+    <!-- فلاتر وفرز -->
+    <div class="filters-bar">
+      <label>الفرز:</label>
+      <select id="sort-select" onchange="applyFilters()">
+        <option value="default">الافتراضي</option>
+        <option value="price-asc">الأقل سعراً</option>
+        <option value="price-desc">الأعلى سعراً</option>
+        <option value="cover-desc">أعلى تغطية</option>
+        <option value="monthly">القسط الشهري</option>
+      </select>
+      <div class="sep"></div>
+      <label class="filter-check">
+        <input type="checkbox" id="filter-available" onchange="applyFilters()">
+        عرض العروض المتاحة فقط
+      </label>
+    </div>
+
+    <!-- ═══ العروض المتاحة ═══ -->
+    <div class="section-title" style="margin-bottom:16px;">
+      <span></span> العروض المتاحة
+      <span style="font-size:14px;font-weight:600;color:var(--muted);margin-right:4px;" id="quotes-count">(3 عروض)</span>
+    </div>
+
+    <!-- حالة عدم وجود عروض -->
+    <div class="empty-state" id="empty-state">
+      <div class="empty-state-icon">📭</div>
+      <h3>لا توجد عروض متاحة</h3>
+      <p>لا توجد عروض متاحة حالياً. سيتم إشعارك عند توفر عروض جديدة.</p>
+    </div>
+
+    <!-- شبكة العروض -->
+    <div class="quotes-grid" id="quotes-grid">
+      <!-- تُنشأ بالكود -->
+    </div>
+
+    <!-- ═══ جدول المقارنة ═══ -->
+    <div class="compare-section">
+      <div class="section-title"><span></span> جدول المقارنة السريع</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>شركة التأمين</th>
+              <th>رقم العرض</th>
+              <th>السعر الإجمالي</th>
+              <th>القسط الشهري</th>
+              <th>نسبة التحمل</th>
+              <th>عدد التغطيات</th>
+              <th>مدة التأمين</th>
+              <th>الحالة</th>
+              <th>الإجراء</th>
+            </tr>
+          </thead>
+          <tbody id="compare-table-body">
+            <!-- تُنشأ بالكود -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ ملاحظات العميل ═══ -->
+    <div class="notes-section">
+      <h3>💬 ملاحظات أو استفسارات</h3>
+      <p style="font-size:13px;color:var(--muted);margin:0 0 12px;">هل لديك سؤال حول أحد العروض؟ يمكنك كتابته هنا وسيتواصل معك فريق الدعم.</p>
+      <div class="field" style="margin-bottom:12px;">
+        <textarea id="customer-notes" placeholder="اكتب ملاحظتك أو استفسارك هنا..."></textarea>
+      </div>
+      <button class="btn" onclick="handleSendNotes()">إرسال الملاحظة</button>
+    </div>
+
+    <!-- ═══ شريط الإجراءات ═══ -->
+    <div class="actions-bar">
+      <div class="actions-bar-group">
+        <button class="btn secondary" onclick="handleDownloadPDF()">⬇ تحميل العروض PDF</button>
+        <button class="btn secondary" onclick="handleShare()">🔗 مشاركة الرابط</button>
+        <button class="btn ghost" onclick="handleContact()">📞 تواصل مع خدمة العملاء</button>
+      </div>
+      <a href="/customer/portal/index.html" class="btn ghost">← العودة لبوابة العميل</a>
+    </div>
+
+  </div>
+</main>
+
+<!-- فوتر -->
+<footer class="page-footer">
+  شركة يُسُر للوساطة التأمينية للتأمين والتثمين — صفحة تجريبية © 2026
+</footer>
+
+<!-- ═══ Modal التفاصيل ═══ -->
+<div class="modal-backdrop" id="details-modal-backdrop" onclick="closeDetailsModal(event)">
+  <div class="modal" id="details-modal">
+    <div class="modal-header">
+      <h3 id="details-modal-title">تفاصيل العرض</h3>
+      <button class="modal-close" onclick="closeDetailsModal()">✕</button>
+    </div>
+    <div class="modal-body" id="details-modal-body">
+      <!-- محتوى ديناميكي -->
+    </div>
+    <div class="modal-footer">
+      <button class="btn secondary" onclick="closeDetailsModal()">إغلاق</button>
+      <button class="btn" id="details-modal-choose-btn">اختيار هذا العرض</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Modal التأكيد ═══ -->
+<div class="modal-backdrop confirm-modal" id="confirm-modal-backdrop">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header">
+      <h3>تأكيد الاختيار</h3>
+      <button class="modal-close" onclick="closeConfirmModal()">✕</button>
+    </div>
+    <div class="confirm-body">
+      <div class="confirm-icon">🤝</div>
+      <h3>هل أنت متأكد من اختيار هذا العرض؟</h3>
+      <p>شركة التأمين</p>
+      <div class="confirm-price" id="confirm-company-name">—</div>
+      <p style="margin-top:10px;">السعر الإجمالي</p>
+      <div class="confirm-price" id="confirm-price">—</div>
+      <p style="font-size:12px;color:var(--muted);margin-top:14px;">بعد التأكيد، ستتلقى إشعاراً وسيتم إبلاغ شركة التأمين وشركة يُسُر للوساطة التأمينية.</p>
+    </div>
+    <div class="modal-footer" style="justify-content:center; gap:14px;">
+      <button class="btn secondary" onclick="closeConfirmModal()">إلغاء</button>
+      <button class="btn success" onclick="confirmSelection()">✓ تأكيد الاختيار</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ════════════════════════════════════════════════
+   بيانات الطلب والعروض التجريبية
+════════════════════════════════════════════════ */
+const QUOTES_DATA = [
+  {
+    id: "Q-OMN-1001",
+    company: "الشركة العمانية للتأمين",
+    companyShort: "ع.ت",
+    companyColor: "#0b5f8a",
+    policyType: "تأمين عقار شامل",
+    duration: "سنة واحدة",
+    totalPrice: 185,
+    totalPriceDisplay: "185 ر.ع",
+    monthlyPremium: "15.4 ر.ع",
+    monthlyNum: 15.4,
+    deductible: "50 ر.ع",
+    deductibleNum: 50,
+    coverages: ["الحريق", "الكوارث الطبيعية", "أضرار المياه", "المسؤولية المدنية"],
+    exclusions: ["سوء الاستخدام", "الأضرار المتعمدة"],
+    status: "best-price",
+    statusLabel: "الأفضل سعراً",
+    expiryDate: "25/06/2026",
+    notes: "تشمل الوثيقة تغطية شاملة للمباني والتجهيزات الثابتة. يُشترط تقديم تقرير التثمين المعتمد قبل الإصدار.",
+    requiredDocs: ["صورة الهوية الشخصية", "عقد الملكية", "تقرير التثمين", "صور العقار"],
+    terms: "يسري التأمين اعتباراً من تاريخ إصدار الوثيقة وتسديد القسط الأول.",
+    selected: false,
+  },
+  {
+    id: "Q-GLF-1002",
+    company: "تأمين الخليج",
+    companyShort: "خ.ت",
+    companyColor: "#0d7a6b",
+    policyType: "تأمين عقار مع تغطية إضافية",
+    duration: "سنة واحدة",
+    totalPrice: 230,
+    totalPriceDisplay: "230 ر.ع",
+    monthlyPremium: "19.2 ر.ع",
+    monthlyNum: 19.2,
+    deductible: "35 ر.ع",
+    deductibleNum: 35,
+    coverages: ["الحريق", "الكوارث الطبيعية", "السرقة", "أضرار المياه", "تغطية إضافية للمحتويات"],
+    exclusions: ["الأضرار المتعمدة"],
+    status: "best-cover",
+    statusLabel: "تغطية أعلى",
+    expiryDate: "20/06/2026",
+    notes: "تغطية شاملة تشمل محتويات المنزل بحد أقصى 5,000 ر.ع. نسبة التحمل من بين الأدنى في السوق.",
+    requiredDocs: ["صورة الهوية الشخصية", "عقد الملكية", "تقرير التثمين", "قائمة المحتويات"],
+    terms: "تُطبق نسبة التحمل على كل مطالبة مستقلة.",
+    selected: false,
+  },
+  {
+    id: "Q-NAT-1003",
+    company: "الوطنية للتأمين",
+    companyShort: "و.ت",
+    companyColor: "#6d28d9",
+    policyType: "تأمين عقار أساسي",
+    duration: "سنة واحدة",
+    totalPrice: 160,
+    totalPriceDisplay: "160 ر.ع",
+    monthlyPremium: null,
+    monthlyNum: null,
+    deductible: "75 ر.ع",
+    deductibleNum: 75,
+    coverages: ["الحريق", "أضرار المياه الأساسية"],
+    exclusions: ["السرقة", "المحتويات الداخلية", "الكوارث الطبيعية"],
+    status: "available",
+    statusLabel: "متاح",
+    expiryDate: "15/06/2026",
+    notes: "وثيقة أساسية تناسب المتطلبات الدنيا. يمكن ترقيتها لاحقاً بإضافات اختيارية.",
+    requiredDocs: ["صورة الهوية الشخصية", "عقد الملكية", "تقرير التثمين"],
+    terms: "لا تشمل هذه الوثيقة تغطية المحتويات أو السرقة بشكل تلقائي.",
+    selected: false,
+  },
+];
+
+let selectedQuoteId = null;
+let pendingSelectId = null;
+
+/* ════════════════════════════════════════════════
+   قراءة request_id من الرابط
+════════════════════════════════════════════════ */
+function getRequestId() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("request_id") || "INS-2026-0007";
+}
+
+function initRequestId() {
+  const id = getRequestId();
+  document.getElementById("req-id").textContent = id;
+  document.getElementById("req-id-badge").textContent = id;
+}
+
+/* ════════════════════════════════════════════════
+   إنشاء Badge HTML
+════════════════════════════════════════════════ */
+function badgeHTML(q) {
+  if (q.selected) return `<span class="badge selected-badge">✓ تم اختياره</span>`;
+  const map = {
+    "best-price": `<span class="badge best-price">⭐ الأفضل سعراً</span>`,
+    "best-cover": `<span class="badge best-cover">🛡 تغطية أعلى</span>`,
+    "expiring":   `<span class="badge expiring">⏰ ينتهي قريباً</span>`,
+    "available":  `<span class="badge available">✔ متاح</span>`,
+  };
+  let out = map[q.status] || map["available"];
+  if (q.monthlyPremium) out += ` <span class="badge monthly">💳 قسط شهري</span>`;
+  return out;
+}
+
+/* ════════════════════════════════════════════════
+   بناء بطاقة العرض
+════════════════════════════════════════════════ */
+function buildQuoteCard(q) {
+  const top3 = q.coverages.slice(0, 3);
+  const cardClass = ["quote-card",
+    q.status === "best-price" ? "best-price-card" : "",
+    q.status === "best-cover" ? "best-cover-card" : "",
+    q.selected ? "selected" : "",
+  ].filter(Boolean).join(" ");
+
+  return `
+  <div class="${cardClass}" data-id="${q.id}" id="card-${q.id}">
+    <div class="quote-card-top">
+      <div class="company-logo" style="background:${q.companyColor};">${q.companyShort}</div>
+      <div class="company-info">
+        <div class="company-name">${q.company}</div>
+        <div class="quote-number">${q.id} · ${q.policyType}</div>
+        <div style="margin-top:6px;">${badgeHTML(q)}</div>
+      </div>
+    </div>
+
+    <div class="quote-card-price">
+      <div class="price-block">
+        <div class="price-label">السعر الإجمالي</div>
+        <div class="price-amount">${q.totalPriceDisplay}</div>
+        <div class="price-sub">· مدة ${q.duration}</div>
+      </div>
+      ${q.monthlyPremium ? `
+      <div class="price-monthly">
+        <div class="price-label">القسط الشهري</div>
+        <div class="price-amount" style="font-size:16px;color:var(--brand-2);">${q.monthlyPremium}</div>
+      </div>` : `<div class="price-monthly"><div class="price-label">القسط الشهري</div><div style="font-size:13px;color:var(--muted);">غير متوفر</div></div>`}
+    </div>
+
+    <div class="quote-card-body">
+      <div class="cover-label">أبرز التغطيات</div>
+      <ul class="cover-list">
+        ${top3.map(c => `<li>${c}</li>`).join("")}
+        ${q.coverages.length > 3 ? `<li style="color:var(--brand);font-weight:700;">+ ${q.coverages.length - 3} تغطيات إضافية</li>` : ""}
+      </ul>
+      <div class="deductible-row">⚙ نسبة التحمل: <strong>${q.deductible}</strong></div>
+      <div class="policy-meta">
+        <span class="meta-chip">📅 ينتهي: ${q.expiryDate}</span>
+        <span class="meta-chip">📋 ${q.duration}</span>
+      </div>
+    </div>
+
+    <div class="quote-card-footer">
+      <button class="btn secondary" onclick="openDetailsModal('${q.id}')">عرض التفاصيل</button>
+      ${q.selected
+        ? `<button class="btn success" disabled style="opacity:0.7;">✓ تم الاختيار</button>`
+        : `<button class="btn" onclick="openConfirmModal('${q.id}')">اختيار هذا العرض</button>`
+      }
+    </div>
+  </div>`;
+}
+
+/* ════════════════════════════════════════════════
+   بناء صفوف جدول المقارنة
+════════════════════════════════════════════════ */
+function buildTableRows(data) {
+  return data.map(q => `
+  <tr class="${q.selected ? 'selected-row' : ''}" id="row-${q.id}">
+    <td>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:28px;height:28px;border-radius:6px;background:${q.companyColor};color:#fff;display:grid;place-items:center;font-size:11px;font-weight:800;flex:0 0 auto;">${q.companyShort}</div>
+        <span style="font-weight:700;">${q.company}</span>
+      </div>
+    </td>
+    <td style="font-size:12px;color:var(--muted);">${q.id}</td>
+    <td class="compare-price">${q.totalPriceDisplay}</td>
+    <td>${q.monthlyPremium || '<span style="color:var(--muted);">—</span>'}</td>
+    <td>${q.deductible}</td>
+    <td><span class="badge available">${q.coverages.length} تغطية</span></td>
+    <td>${q.duration}</td>
+    <td>${badgeHTML(q)}</td>
+    <td>
+      ${q.selected
+        ? `<span class="badge selected-badge">✓ مختار</span>`
+        : `<button class="btn small" onclick="openConfirmModal('${q.id}')">اختيار</button>`
+      }
+    </td>
+  </tr>`).join("");
+}
+
+/* ════════════════════════════════════════════════
+   عرض وفرز وتصفية
+════════════════════════════════════════════════ */
+function applyFilters() {
+  let data = [...QUOTES_DATA];
+  const sortVal = document.getElementById("sort-select").value;
+  const onlyAvailable = document.getElementById("filter-available").checked;
+
+  if (onlyAvailable) data = data.filter(q => !q.selected);
+
+  if (sortVal === "price-asc")    data.sort((a, b) => a.totalPrice - b.totalPrice);
+  if (sortVal === "price-desc")   data.sort((a, b) => b.totalPrice - a.totalPrice);
+  if (sortVal === "cover-desc")   data.sort((a, b) => b.coverages.length - a.coverages.length);
+  if (sortVal === "monthly")      data.sort((a, b) => (a.monthlyNum||999) - (b.monthlyNum||999));
+
+  renderQuotes(data);
+}
+
+function renderQuotes(data) {
+  const grid = document.getElementById("quotes-grid");
+  const emptyState = document.getElementById("empty-state");
+  const count = document.getElementById("quotes-count");
+
+  if (!data.length) {
+    grid.innerHTML = "";
+    emptyState.classList.add("visible");
+    count.textContent = "(لا توجد عروض)";
+    return;
+  }
+  emptyState.classList.remove("visible");
+  count.textContent = `(${data.length} ${data.length === 1 ? "عرض" : "عروض"})`;
+  grid.innerHTML = data.map(buildQuoteCard).join("");
+  document.getElementById("compare-table-body").innerHTML = buildTableRows(data);
+}
+
+/* ════════════════════════════════════════════════
+   Modal التفاصيل
+════════════════════════════════════════════════ */
+function openDetailsModal(id) {
+  const q = QUOTES_DATA.find(x => x.id === id);
+  if (!q) return;
+
+  document.getElementById("details-modal-title").textContent = `تفاصيل عرض — ${q.company}`;
+
+  const body = document.getElementById("details-modal-body");
+  body.innerHTML = `
+    <div class="modal-info-grid">
+      <div class="modal-info-item"><label>رقم العرض</label><span>${q.id}</span></div>
+      <div class="modal-info-item"><label>نوع الوثيقة</label><span>${q.policyType}</span></div>
+      <div class="modal-info-item"><label>السعر الإجمالي</label><span style="color:var(--brand);font-size:18px;">${q.totalPriceDisplay}</span></div>
+      <div class="modal-info-item"><label>القسط الشهري</label><span>${q.monthlyPremium || "غير متوفر"}</span></div>
+      <div class="modal-info-item"><label>مدة التأمين</label><span>${q.duration}</span></div>
+      <div class="modal-info-item"><label>نسبة التحمل</label><span>${q.deductible}</span></div>
+      <div class="modal-info-item"><label>انتهاء صلاحية العرض</label><span>${q.expiryDate}</span></div>
+      <div class="modal-info-item"><label>الحالة</label><span>${q.statusLabel}</span></div>
+    </div>
+
+    <div class="modal-section">
+      <h4>✅ التغطيات المشمولة (${q.coverages.length})</h4>
+      <ul>${q.coverages.map(c => `<li class="inc">${c}</li>`).join("")}</ul>
+    </div>
+
+    <div class="modal-section">
+      <h4>❌ التغطيات غير المشمولة</h4>
+      <ul>${q.exclusions.map(c => `<li class="exc">${c}</li>`).join("")}</ul>
+    </div>
+
+    <div class="modal-section">
+      <h4>📋 المستندات المطلوبة</h4>
+      <ul>${q.requiredDocs.map(d => `<li style="color:var(--ink);">📄 ${d}</li>`).join("")}</ul>
+    </div>
+
+    <div class="modal-section">
+      <h4>📑 الشروط والأحكام</h4>
+      <p style="font-size:14px;color:#445566;background:#f8fafc;padding:12px;border-radius:8px;margin:0;">${q.terms}</p>
+    </div>
+
+    <div class="modal-section">
+      <h4>💬 ملاحظات شركة التأمين</h4>
+      <p style="font-size:14px;color:#445566;background:#f8fafc;padding:12px;border-radius:8px;margin:0;">${q.notes}</p>
+    </div>
+  `;
+
+  const chooseBtn = document.getElementById("details-modal-choose-btn");
+  if (q.selected) {
+    chooseBtn.textContent = "✓ تم الاختيار";
+    chooseBtn.disabled = true;
+    chooseBtn.className = "btn success";
+    chooseBtn.onclick = null;
+  } else {
+    chooseBtn.textContent = "اختيار هذا العرض";
+    chooseBtn.disabled = false;
+    chooseBtn.className = "btn";
+    chooseBtn.onclick = () => { closeDetailsModal(); openConfirmModal(id); };
+  }
+
+  document.getElementById("details-modal-backdrop").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeDetailsModal(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById("details-modal-backdrop").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+/* ════════════════════════════════════════════════
+   Modal التأكيد
+════════════════════════════════════════════════ */
+function openConfirmModal(id) {
+  const q = QUOTES_DATA.find(x => x.id === id);
+  if (!q) return;
+  pendingSelectId = id;
+  document.getElementById("confirm-company-name").textContent = q.company;
+  document.getElementById("confirm-price").textContent = q.totalPriceDisplay;
+  document.getElementById("confirm-modal-backdrop").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeConfirmModal() {
+  document.getElementById("confirm-modal-backdrop").classList.remove("open");
+  document.body.style.overflow = "";
+  pendingSelectId = null;
+}
+
+function confirmSelection() {
+  if (!pendingSelectId) return;
+  const q = QUOTES_DATA.find(x => x.id === pendingSelectId);
+  if (!q) return;
+
+  // إعادة تعيين الاختيار السابق
+  QUOTES_DATA.forEach(x => x.selected = false);
+  q.selected = true;
+  selectedQuoteId = q.id;
+
+  closeConfirmModal();
+  showToast(`تم اختيار عرض ${q.company} بنجاح بشكل تجريبي، وسيتم إشعار شركة التأمين وشركة يُسُر للوساطة التأمينية.`, "success");
+
+  // تحديث شريط العرض المختار
+  const banner = document.getElementById("selected-banner");
+  banner.classList.add("visible");
+  document.getElementById("selected-banner-title").textContent =
+    `العرض المختار: ${q.company}`;
+  document.getElementById("selected-banner-sub").textContent =
+    `${q.id} · السعر: ${q.totalPriceDisplay} · نوع الوثيقة: ${q.policyType}`;
+
+  // تحديث Stepper — الخطوة الأخيرة تصبح نشطة
+  const stepItems = document.querySelectorAll(".stepper-item");
+  stepItems[3].classList.remove("active");
+  stepItems[3].classList.add("done");
+  stepItems[3].querySelector(".step-dot").textContent = "✓";
+  stepItems[4].classList.add("active");
+  stepItems[4].querySelector(".step-dot").textContent = "5";
+
+  applyFilters();
+}
+
+/* ════════════════════════════════════════════════
+   إجراءات أزرار الصفحة (تجريبية)
+════════════════════════════════════════════════ */
+function handleDownloadPDF() {
+  showToast("⬇ جاري تجهيز ملف PDF... (تجريبي)", "info");
+}
+
+function handleShare() {
+  const url = window.location.href;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() =>
+      showToast("✅ تم نسخ رابط الصفحة إلى الحافظة", "success")
+    );
+  } else {
+    showToast("🔗 الرابط: " + url, "info");
+  }
+}
+
+function handleContact() {
+  showToast("📞 سيتم التواصل معك قريباً. (تجريبي)", "info");
+}
+
+function handleSendNotes() {
+  const notes = document.getElementById("customer-notes").value.trim();
+  if (!notes) {
+    showToast("⚠ يرجى كتابة ملاحظة قبل الإرسال.", "warn");
+    return;
+  }
+  document.getElementById("customer-notes").value = "";
+  showToast("✅ تم إرسال ملاحظتك بنجاح.", "success");
+}
+
+/* ════════════════════════════════════════════════
+   Toast
+════════════════════════════════════════════════ */
+let toastTimer;
+function showToast(msg, type = "") {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "toast show " + type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.className = "toast"; }, 4000);
+}
+
+/* ════════════════════════════════════════════════
+   تهيئة الصفحة
+════════════════════════════════════════════════ */
+document.addEventListener("DOMContentLoaded", () => {
+  initRequestId();
+  renderQuotes(QUOTES_DATA);
+});
+</script>
+</body>
+</html>
