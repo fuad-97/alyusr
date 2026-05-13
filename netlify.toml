@@ -1,0 +1,13 @@
+[build]
+  publish = "alyusr ins"
+  command = ""
+
+[[redirects]]
+  from = "/"
+  to = "/insurance_demo_intro.html"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
